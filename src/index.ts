@@ -63,30 +63,11 @@ export default {
 		const url = new URL(request.url);
 
 		if (url.pathname === "/sse" || url.pathname === "/sse/message") {
-			response = MyMCP.serveSSE("/sse").fetch(request, env, ctx);
-			
-  			const headers = new Headers(response.headers);
-  			headers.set("Access-Control-Allow-Origin", "*");
-  			headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  			headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
-  			return new Response(response.body, {
-    				status: response.status,
-    				headers,
-  			});
+			return MyMCP.serveSSE("/sse").fetch(request, env, ctx);
 		}
 
 		if (url.pathname === "/mcp") {
-			response = MyMCP.serve("/mcp").fetch(request, env, ctx);
-			const headers = new Headers(response.headers);
-  			headers.set("Access-Control-Allow-Origin", "*");
-  			headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  			headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
-  			return new Response(response.body, {
-    				status: response.status,
-    				headers,
-  			});
+			return MyMCP.serve("/mcp").fetch(request, env, ctx);
 		}
 
 		return new Response("Not found", { status: 404 });
