@@ -63,7 +63,17 @@ export default {
 		const url = new URL(request.url);
 
 		if (url.pathname === "/sse" || url.pathname === "/sse/message") {
-			return MyMCP.serveSSE("/sse").fetch(request, env, ctx);
+			const response = MyMCP.serveSSE("/sse").fetch(request, env, ctx);
+			
+  			const headers = new Headers(response.headers);
+  			headers.set("Access-Control-Allow-Origin", "*");
+  			headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  			headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  			return new Response(response.body, {
+    				status: response.status,
+    				headers,
+  			});
 		}
 
 		if (url.pathname === "/mcp") {
